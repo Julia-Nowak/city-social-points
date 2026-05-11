@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Clock, ArrowLeft, Sparkles, Search, Navigation } from "lucide-react";
+import { MapPin, Clock, ArrowLeft, Sparkles, Search, Navigation, Route as RouteIcon, LocateFixed } from "lucide-react";
 import { PARTNERS, REYKJAVIK_CENTER, haversineKm, type Partner } from "@/data/partners";
 
 export const Route = createFileRoute("/map")({
@@ -40,6 +40,27 @@ function MapPage() {
   const [selectedId, setSelectedId] = useState<string>(PARTNERS[0].id);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category>("All");
+  const [userLoc, setUserLoc] = useState<{ lat: number; lng: number } | null>(null);
+  const [locStatus, setLocStatus] = useState<"idle" | "loading" | "denied" | "ok">("idle");
+
+  const origin = userLoc ?? REYKJAVIK_CENTER;
+  const originLabel = userLoc ? "your location" : "Reykjavík centre";
+
+  function requestLocation() {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      setLocStatus("denied");
+      return;
+    }
+    setLocStatus("loading");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLoc({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setLocStatus("ok");
+      },
+      () => setLocStatus("denied"),
+      { enableHighAccuracy: true, timeout: 8000 },
+    );
+  }
 
   const partnersWithDistance = useMemo(
     () =>
@@ -65,6 +86,11 @@ function MapPage() {
 
   const selected: Partner =
     PARTNERS.find((p) => p.id === selectedId) ?? PARTNERS[0];
+
+  const directionsUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${origin.lat}%2C${origin.lng}%3B${selected.lat}%2C${selected.lng}`;
+  const gmapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${selected.lat},${selected.lng}&travelmode=walking`;
+  const distanceFromOrigin = haversineKm(origin, selected);
+  const walkingMinutes = Math.max(1, Math.round((distanceFromOrigin / 5) * 60));
 
   return (
     <div className="min-h-screen bg-background">
@@ -206,9 +232,38 @@ function MapPage() {
                   <Clock className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <span>{selected.hours}</span>
                 </div>
+                <div className="flex items-start gap-2.5">
+                  <RouteIcon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  <span>
+                    {distanceFromOrigin.toFixed(1)} km · ~{walkingMinutes} min walk from {originLabel}
+                  </span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <LocateFixed className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  <button
+                    onClick={requestLocation}
+                    className="text-left underline-offset-2 hover:underline"
+                    disabled={locStatus === "loading"}
+                  >
+                    {locStatus === "ok" && "Using your location"}
+                    {locStatus === "loading" && "Locating…"}
+                    {locStatus === "denied" && "Location blocked — tap to retry"}
+                    {locStatus === "idle" && "Use my location for directions"}
+                  </button>
+                </div>
               </div>
 
               <div className="mt-6 flex flex-wrap gap-2">
+                <Button asChild>
+                  <a href={gmapsDirectionsUrl} target="_blank" rel="noreferrer">
+                    <RouteIcon className="mr-1 h-4 w-4" /> Directions
+                  </a>
+                </Button>
+                <Button asChild variant="outline">
+                  <a href={directionsUrl} target="_blank" rel="noreferrer">
+                    Walking route (OSM)
+                  </a>
+                </Button>
                 <Button asChild>
                   <a
                     href={`https://www.openstreetmap.org/?mlat=${selected.lat}&mlon=${selected.lng}#map=17/${selected.lat}/${selected.lng}`}
