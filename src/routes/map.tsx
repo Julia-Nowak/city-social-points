@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MapPin, Clock, ArrowLeft, Sparkles, Search, Navigation, Route as RouteIcon, LocateFixed } from "lucide-react";
+import { MapPin, Clock, ArrowLeft, Sparkles, Search, Navigation, Route as RouteIcon, LocateFixed, Footprints, Bike, Bus } from "lucide-react";
 import { PARTNERS, REYKJAVIK_CENTER, haversineKm, type Partner } from "@/data/partners";
 
 export const Route = createFileRoute("/map")({
@@ -26,6 +26,14 @@ export const Route = createFileRoute("/map")({
 const CATEGORIES = ["All", "Café", "Pool", "Museum", "Garden", "Library", "Shop"] as const;
 type Category = (typeof CATEGORIES)[number];
 
+type TravelMode = "walking" | "cycling" | "transit";
+
+const TRAVEL_MODES: { id: TravelMode; label: string; icon: typeof Footprints; kmh: number }[] = [
+  { id: "walking", label: "Walking", icon: Footprints, kmh: 5 },
+  { id: "cycling", label: "Cycling", icon: Bike, kmh: 16 },
+  { id: "transit", label: "Transit", icon: Bus, kmh: 22 },
+];
+
 function buildEmbedUrl(p: { lat: number; lng: number }, zoom = 0.012) {
   const bbox = [
     p.lng - zoom,
@@ -42,6 +50,7 @@ function MapPage() {
   const [category, setCategory] = useState<Category>("All");
   const [userLoc, setUserLoc] = useState<{ lat: number; lng: number } | null>(null);
   const [locStatus, setLocStatus] = useState<"idle" | "loading" | "denied" | "ok">("idle");
+  const [travelMode, setTravelMode] = useState<TravelMode>("walking");
 
   const origin = userLoc ?? REYKJAVIK_CENTER;
   const originLabel = userLoc ? "your location" : "Reykjavík centre";
@@ -87,10 +96,15 @@ function MapPage() {
   const selected: Partner =
     PARTNERS.find((p) => p.id === selectedId) ?? PARTNERS[0];
 
-  const directionsUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${origin.lat}%2C${origin.lng}%3B${selected.lat}%2C${selected.lng}`;
-  const gmapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${selected.lat},${selected.lng}&travelmode=walking`;
+  const modeMeta = TRAVEL_MODES.find((m) => m.id === travelMode)!;
+  const osmEngine =
+    travelMode === "cycling" ? "fossgis_osrm_bike" : "fossgis_osrm_foot";
+  const gmapsTravelMode =
+    travelMode === "cycling" ? "bicycling" : travelMode === "transit" ? "transit" : "walking";
+  const directionsUrl = `https://www.openstreetmap.org/directions?engine=${osmEngine}&route=${origin.lat}%2C${origin.lng}%3B${selected.lat}%2C${selected.lng}`;
+  const gmapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${selected.lat},${selected.lng}&travelmode=${gmapsTravelMode}`;
   const distanceFromOrigin = haversineKm(origin, selected);
-  const walkingMinutes = Math.max(1, Math.round((distanceFromOrigin / 5) * 60));
+  const travelMinutes = Math.max(1, Math.round((distanceFromOrigin / modeMeta.kmh) * 60));
 
   return (
     <div className="min-h-screen bg-background">
@@ -235,7 +249,7 @@ function MapPage() {
                 <div className="flex items-start gap-2.5">
                   <RouteIcon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                   <span>
-                    {distanceFromOrigin.toFixed(1)} km · ~{walkingMinutes} min walk from {originLabel}
+                    {distanceFromOrigin.toFixed(1)} km · ~{travelMinutes} min {modeMeta.label.toLowerCase()} from {originLabel}
                   </span>
                 </div>
                 <div className="flex items-start gap-2.5">
@@ -254,16 +268,42 @@ function MapPage() {
               </div>
 
               <div className="mt-6 flex flex-wrap gap-2">
+                <div className="flex w-full flex-wrap items-center gap-1.5">
+                  <span className="mr-1 text-xs uppercase tracking-wider text-muted-foreground">
+                    Mode
+                  </span>
+                  {TRAVEL_MODES.map((m) => {
+                    const Icon = m.icon;
+                    const active = m.id === travelMode;
+                    return (
+                      <button
+                        key={m.id}
+                        onClick={() => setTravelMode(m.id)}
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition-smooth ${
+                          active
+                            ? "border-transparent bg-foreground text-background"
+                            : "border-border bg-card text-muted-foreground hover:text-foreground"
+                        }`}
+                        aria-pressed={active}
+                      >
+                        <Icon className="h-3.5 w-3.5" />
+                        {m.label}
+                      </button>
+                    );
+                  })}
+                </div>
                 <Button asChild>
                   <a href={gmapsDirectionsUrl} target="_blank" rel="noreferrer">
-                    <RouteIcon className="mr-1 h-4 w-4" /> Directions
+                    <RouteIcon className="mr-1 h-4 w-4" /> {modeMeta.label} directions
                   </a>
                 </Button>
-                <Button asChild variant="outline">
-                  <a href={directionsUrl} target="_blank" rel="noreferrer">
-                    Walking route (OSM)
-                  </a>
-                </Button>
+                {travelMode !== "transit" && (
+                  <Button asChild variant="outline">
+                    <a href={directionsUrl} target="_blank" rel="noreferrer">
+                      {modeMeta.label} route (OSM)
+                    </a>
+                  </Button>
+                )}
                 <Button asChild>
                   <a
                     href={`https://www.openstreetmap.org/?mlat=${selected.lat}&mlon=${selected.lng}#map=17/${selected.lat}/${selected.lng}`}
