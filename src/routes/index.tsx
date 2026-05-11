@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
-  Coffee, Ticket, Waves, BookOpen, Award, Leaf,
+  Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.jpg";
 
@@ -214,8 +214,17 @@ function Index() {
       {/* Rewards */}
       <section id="rewards" className="border-t border-border bg-secondary/40">
         <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Spend your stig</h2>
-          <p className="mt-2 text-muted-foreground">Local partners across Reykjavík redeem your civic points.</p>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Spend your stig</h2>
+              <p className="mt-2 text-muted-foreground">Local partners across Reykjavík redeem your civic points.</p>
+            </div>
+            <Button asChild variant="outline">
+              <Link to="/map">
+                <MapPin className="mr-1 h-4 w-4" /> Find on map
+              </Link>
+            </Button>
+          </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {REWARDS.map((r, i) => {
               const Icon = r.icon;
