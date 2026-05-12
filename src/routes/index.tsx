@@ -107,12 +107,33 @@ function Index() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-aurora animate-aurora">
               <Sparkles className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="text-lg font-semibold tracking-tight">Reykjavíkurstig</span>
+            <span className="text-lg font-semibold tracking-tight">{t("brand")}</span>
           </div>
-          <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm shadow-card-soft sm:flex">
-            <Award className="h-4 w-4 text-primary" />
-            <span className="font-semibold">{points}</span>
-            <span className="text-muted-foreground">stig</span>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center rounded-full border border-border bg-card p-0.5 text-xs shadow-card-soft" role="group" aria-label="Language">
+              <Languages className="ml-2 mr-1 h-3.5 w-3.5 text-muted-foreground" />
+              <button
+                type="button"
+                onClick={() => setLang("is")}
+                aria-pressed={lang === "is"}
+                className={`rounded-full px-2.5 py-1 font-medium transition-smooth ${lang === "is" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                IS
+              </button>
+              <button
+                type="button"
+                onClick={() => setLang("en")}
+                aria-pressed={lang === "en"}
+                className={`rounded-full px-2.5 py-1 font-medium transition-smooth ${lang === "en" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                EN
+              </button>
+            </div>
+            <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm shadow-card-soft sm:flex">
+              <Award className="h-4 w-4 text-primary" />
+              <span className="font-semibold">{points}</span>
+              <span className="text-muted-foreground">{t("points_label")}</span>
+            </div>
           </div>
         </div>
       </header>
@@ -132,24 +153,23 @@ function Index() {
         </div>
         <div className="mx-auto max-w-6xl px-6 pt-10 pb-6">
           <Badge variant="secondary" className="mb-4">
-            Velkomin · Tilraunaverkefni fyrir Reykjavíkurborg
+            {t("hero_badge")}
           </Badge>
           <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
-            Gerðu vel við borgina þína.{" "}
+            {t("hero_title_a")}{" "}
             <span className="text-gradient-aurora bg-gradient-aurora animate-aurora">
-              Safnaðu stigum.
+              {t("hero_title_b")}
             </span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            Endurvinndu, taktu strætó, hjálpaðu nágranna eða tíndu rusl — hvert lítið verk verður að
-            <em> stigum</em> sem þú getur eytt í sundlaugum, kaffihúsum og söfnum um alla Reykjavík.
+            {t("hero_lede")}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button size="lg" className="shadow-glow" onClick={() => document.getElementById("actions")?.scrollIntoView({ behavior: "smooth" })}>
-              Byrjaðu að safna
+              {t("cta_start")}
             </Button>
             <Button size="lg" variant="outline" onClick={() => document.getElementById("rewards")?.scrollIntoView({ behavior: "smooth" })}>
-              Sjá verðlaun
+              {t("cta_rewards")}
             </Button>
           </div>
         </div>
@@ -161,16 +181,16 @@ function Index() {
           <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gradient-aurora opacity-30 blur-3xl animate-aurora" />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-wider text-muted-foreground">Staðan þín</p>
+              <p className="text-sm uppercase tracking-wider text-muted-foreground">{t("balance")}</p>
               <div className="mt-2 flex items-baseline gap-2">
                 <span className="text-5xl font-semibold tracking-tight">{points}</span>
-                <span className="text-lg text-muted-foreground">stig</span>
+                <span className="text-lg text-muted-foreground">{t("points_label")}</span>
               </div>
-              <Badge variant="secondary" className="mt-3">{tier.name}-stig</Badge>
+              <Badge variant="secondary" className="mt-3">{tier.name}{t("tier_suffix")}</Badge>
             </div>
             <div className="w-full sm:max-w-xs">
               <div className="mb-2 flex justify-between text-xs text-muted-foreground">
-                <span>Næsta þrep</span>
+                <span>{t("next_tier")}</span>
                 <span>{points} / {tier.next}</span>
               </div>
               <Progress value={(points / tier.next) * 100} />
@@ -183,8 +203,8 @@ function Index() {
       <section id="actions" className="mx-auto max-w-6xl px-6 py-20">
         <div className="mb-10 flex items-end justify-between">
           <div>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Góðverk dagsins</h2>
-            <p className="mt-2 text-muted-foreground">Smelltu á verk þegar þú klárar það. Heiðurskerfi — í bili.</p>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t("actions_h")}</h2>
+            <p className="mt-2 text-muted-foreground">{t("actions_sub")}</p>
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -203,8 +223,8 @@ function Index() {
                   </div>
                   <Badge variant="outline" className="border-primary/30 text-primary">+{a.points}</Badge>
                 </div>
-                <h3 className="mt-4 font-semibold leading-snug">{a.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{a.detail}</p>
+                <h3 className="mt-4 font-semibold leading-snug">{t(a.titleKey)}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{t(a.detailKey)}</p>
                 <Button
                   size="sm"
                   variant={done ? "secondary" : "default"}
@@ -212,7 +232,7 @@ function Index() {
                   disabled={done}
                   onClick={() => handleAction(a)}
                 >
-                  {done ? "Skráð í dag" : "Ég gerði þetta"}
+                  {done ? t("done") : t("do_it")}
                 </Button>
               </Card>
             );
@@ -225,12 +245,12 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Eyddu stigunum þínum</h2>
-              <p className="mt-2 text-muted-foreground">Samstarfsaðilar um alla Reykjavík taka við stigunum þínum.</p>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t("rewards_h")}</h2>
+              <p className="mt-2 text-muted-foreground">{t("rewards_sub")}</p>
             </div>
             <Button asChild variant="outline">
               <Link to="/map">
-                <MapPin className="mr-1 h-4 w-4" /> Sjá á korti
+                <MapPin className="mr-1 h-4 w-4" /> {t("nav_map")}
               </Link>
             </Button>
           </div>
@@ -248,11 +268,11 @@ function Index() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-aurora text-primary-foreground animate-aurora">
                     <Icon className="h-5 w-5" />
                   </div>
-                  <h3 className="mt-4 font-semibold">{r.title}</h3>
-                  <p className="text-sm text-muted-foreground">{r.partner}</p>
+                  <h3 className="mt-4 font-semibold">{t(r.titleKey)}</h3>
+                  <p className="text-sm text-muted-foreground">{t(r.partnerKey)}</p>
                   <div className="mt-4 flex items-baseline gap-1">
                     <span className="text-2xl font-semibold">{r.cost}</span>
-                    <span className="text-sm text-muted-foreground">stig</span>
+                    <span className="text-sm text-muted-foreground">{t("points_label")}</span>
                   </div>
                   <Button
                     size="sm"
@@ -261,7 +281,7 @@ function Index() {
                     onClick={() => handleRedeem(r)}
                     disabled={isRedeemed}
                   >
-                    {isRedeemed ? "Innleyst" : affordable ? "Leysa út" : "Áfram nú"}
+                    {isRedeemed ? t("redeemed") : affordable ? t("redeem") : t("keep_going")}
                   </Button>
                 </Card>
               );
