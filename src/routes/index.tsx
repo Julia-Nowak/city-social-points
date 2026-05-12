@@ -291,7 +291,7 @@ function Index() {
       </section>
 
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
-        Borgaraleg frumgerð fyrir Reykjavíkurborg · Innblásið af CopenPay · Takk fyrir
+        {t("footer")}
       </footer>
     </div>
   );
