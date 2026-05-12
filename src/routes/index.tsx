@@ -12,7 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
-  Users, Utensils, Shirt, Waves as WavesIcon, Camera, X,
+  Users, Utensils, Shirt, Waves as WavesIcon, Camera, X, ShieldCheck,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
 import { useLang } from "@/lib/i18n";
@@ -389,6 +389,13 @@ function Index() {
                 {t("upload_change")}
               </Button>
             ) : null}
+          </div>
+          <div className="mt-4 flex gap-3 rounded-xl border border-border bg-secondary/40 p-3 text-xs text-muted-foreground">
+            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <div>
+              <p className="font-medium text-foreground">{t("privacy_title")}</p>
+              <p className="mt-1 leading-relaxed">{t("privacy_body")}</p>
+            </div>
           </div>
           <DialogFooter className="mt-4 gap-2 sm:gap-2">
             <Button variant="ghost" onClick={confirmAction}>{t("upload_skip")}</Button>
