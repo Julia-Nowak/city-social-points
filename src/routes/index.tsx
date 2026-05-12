@@ -8,9 +8,10 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
-  Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin,
+  Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -45,49 +46,54 @@ type Reward = {
   icon: React.ComponentType<{ className?: string }>;
 };
 
-const ACTIONS: Action[] = [
-  { id: "recycle", title: "Endurvinna hjá Sorpu", detail: "Skilaðu plasti, pappír eða gleri á næstu Sorpu-stöð.", points: 25, icon: Recycle },
-  { id: "bus", title: "Taktu Strætó í stað bílsins", detail: "Pikkaðu þig inn í gulu vagnana á leið í vinnu eða skóla.", points: 15, icon: Bus },
-  { id: "bike", title: "Hjólaðu 5 km í borginni", detail: "Notaðu hjólastíga Reykjavíkur fyrir snúninga dagsins.", points: 20, icon: Bike },
-  { id: "volunteer", title: "Sjálfboðastarf í eina klst.", detail: "Hjálpaðu hjá Rauða krossinum eða í þínu hverfi.", points: 60, icon: HandHeart },
-  { id: "park", title: "Tíndu rusl í garðinum", detail: "Hreinsaðu Klambratún eða Elliðaárdal — fyrir og eftir mynd.", points: 30, icon: Trees },
-  { id: "library", title: "Fáðu bók að láni á Borgarbókasafninu", detail: "Lestu í staðinn fyrir að kaupa — deildu svo áfram.", points: 10, icon: BookOpen },
+type ActionDef = { id: string; titleKey: string; detailKey: string; points: number; icon: Action["icon"] };
+const ACTIONS: ActionDef[] = [
+  { id: "recycle", titleKey: "a_recycle_t", detailKey: "a_recycle_d", points: 25, icon: Recycle },
+  { id: "bus", titleKey: "a_bus_t", detailKey: "a_bus_d", points: 15, icon: Bus },
+  { id: "bike", titleKey: "a_bike_t", detailKey: "a_bike_d", points: 20, icon: Bike },
+  { id: "volunteer", titleKey: "a_volunteer_t", detailKey: "a_volunteer_d", points: 60, icon: HandHeart },
+  { id: "park", titleKey: "a_park_t", detailKey: "a_park_d", points: 30, icon: Trees },
+  { id: "library", titleKey: "a_library_t", detailKey: "a_library_d", points: 10, icon: BookOpen },
 ];
 
-const REWARDS: Reward[] = [
-  { id: "coffee", title: "Frír uppáhellingur", partner: "Reykjavík Roasters", cost: 40, icon: Coffee },
-  { id: "pool", title: "Sundferð í Sundhöllina", partner: "Sundlaugar Reykjavíkur", cost: 80, icon: Waves },
-  { id: "museum", title: "Aðgangur að Listasafni Reykjavíkur", partner: "Listasafn Reykjavíkur", cost: 120, icon: Ticket },
-  { id: "plant", title: "Íslensk plöntugræðlingur", partner: "Grasagarðurinn", cost: 60, icon: Leaf },
+type RewardDef = { id: string; titleKey: string; partnerKey: string; cost: number; icon: Reward["icon"] };
+const REWARDS: RewardDef[] = [
+  { id: "coffee", titleKey: "r_coffee_t", partnerKey: "r_coffee_p", cost: 40, icon: Coffee },
+  { id: "pool", titleKey: "r_pool_t", partnerKey: "r_pool_p", cost: 80, icon: Waves },
+  { id: "museum", titleKey: "r_museum_t", partnerKey: "r_museum_p", cost: 120, icon: Ticket },
+  { id: "plant", titleKey: "r_plant_t", partnerKey: "r_plant_p", cost: 60, icon: Leaf },
 ];
 
 function Index() {
+  const { lang, setLang, t } = useLang();
   const [points, setPoints] = useState(85);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [redeemed, setRedeemed] = useState<Set<string>>(new Set());
 
   const tier = useMemo(() => {
-    if (points >= 500) return { name: "Norðurljós", next: 1000 };
-    if (points >= 200) return { name: "Jökull", next: 500 };
-    return { name: "Lúpína", next: 200 };
-  }, [points]);
+    if (points >= 500) return { name: t("tier_aurora"), next: 1000 };
+    if (points >= 200) return { name: t("tier_glacier"), next: 500 };
+    return { name: t("tier_sprout"), next: 200 };
+  }, [points, lang]);
 
-  const handleAction = (a: Action) => {
+  const handleAction = (a: ActionDef) => {
     if (completed.has(a.id)) return;
     setCompleted((s) => new Set(s).add(a.id));
     setPoints((p) => p + a.points);
-    toast.success(`+${a.points} stig · Takk fyrir!`, { description: a.title });
+    toast.success(`+${a.points} ${t("points_label")} · ${t("toast_thanks")}`, { description: t(a.titleKey) });
   };
 
-  const handleRedeem = (r: Reward) => {
+  const handleRedeem = (r: RewardDef) => {
     if (redeemed.has(r.id)) return;
     if (points < r.cost) {
-      toast.error("Ekki nógu mörg stig ennþá", { description: `Vantar ${r.cost - points} til viðbótar.` });
+      toast.error(t("toast_not_enough"), { description: t("toast_need", { n: r.cost - points }) });
       return;
     }
     setRedeemed((s) => new Set(s).add(r.id));
     setPoints((p) => p - r.cost);
-    toast.success("Verðlaun opnuð · Gjörðu svo vel", { description: `${r.title} — sýndu þetta hjá ${r.partner}.` });
+    toast.success(t("toast_unlocked"), {
+      description: t("toast_show_at", { title: t(r.titleKey), partner: t(r.partnerKey) }),
+    });
   };
 
   return (
