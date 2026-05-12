@@ -69,12 +69,14 @@ const IS: Dict = {
   a_beach_d: "Mættu á næsta hreinsunardag við ströndina.",
   // photo upload dialog
   upload_title: "Sýndu okkur góðverkið",
-  upload_sub: "Bættu við mynd sem sönnun (valfrjálst). Aðeins geymd á þessu tæki.",
+  upload_sub: "Bættu við mynd sem sönnun (valfrjálst).",
   upload_pick: "Veldu mynd",
   upload_change: "Breyta mynd",
   upload_skip: "Sleppa",
   upload_confirm: "Staðfesta og fá stig",
   upload_thanks_with_photo: "Frábært! Mynd skráð.",
+  privacy_title: "Persónuvernd",
+  privacy_body: "Myndin þín er aðeins geymd í vafranum á þessu tæki (local storage) — hún er ekki send á netþjón og enginn annar sér hana. Hún hverfur sjálfkrafa eftir 30 daga, eða strax ef þú hreinsar vafragögn eða smellir á X.",
 };
 
 const EN: Dict = {
@@ -138,12 +140,14 @@ const EN: Dict = {
   a_beach_t: "Beach clean-up at Grótta",
   a_beach_d: "Join the next shoreline clean-up day.",
   upload_title: "Show us your good deed",
-  upload_sub: "Add a photo as proof (optional). Stored only on this device.",
+  upload_sub: "Add a photo as proof (optional).",
   upload_pick: "Choose photo",
   upload_change: "Change photo",
   upload_skip: "Skip",
   upload_confirm: "Confirm and earn points",
   upload_thanks_with_photo: "Awesome! Photo saved.",
+  privacy_title: "Privacy",
+  privacy_body: "Your photo stays in this browser only (local storage) — it is never uploaded to a server and no one else can see it. It is automatically deleted after 30 days, or sooner if you clear your browser data or tap the X.",
 };
 
 const DICTS: Record<Lang, Dict> = { is: IS, en: EN };
