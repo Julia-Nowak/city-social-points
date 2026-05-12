@@ -1,14 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
+  Users, Utensils, Shirt, Waves as WavesIcon, Camera, X,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
 import { useLang } from "@/lib/i18n";
@@ -54,6 +58,10 @@ const ACTIONS: ActionDef[] = [
   { id: "volunteer", titleKey: "a_volunteer_t", detailKey: "a_volunteer_d", points: 60, icon: HandHeart },
   { id: "park", titleKey: "a_park_t", detailKey: "a_park_d", points: 30, icon: Trees },
   { id: "library", titleKey: "a_library_t", detailKey: "a_library_d", points: 10, icon: BookOpen },
+  { id: "neighbour", titleKey: "a_neighbour_t", detailKey: "a_neighbour_d", points: 20, icon: Users },
+  { id: "soup", titleKey: "a_soup_t", detailKey: "a_soup_d", points: 70, icon: Utensils },
+  { id: "clothes", titleKey: "a_clothes_t", detailKey: "a_clothes_d", points: 25, icon: Shirt },
+  { id: "beach", titleKey: "a_beach_t", detailKey: "a_beach_d", points: 45, icon: WavesIcon },
 ];
 
 type RewardDef = { id: string; titleKey: string; partnerKey: string; cost: number; icon: Reward["icon"] };
@@ -69,6 +77,10 @@ function Index() {
   const [points, setPoints] = useState(85);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [redeemed, setRedeemed] = useState<Set<string>>(new Set());
+  const [pending, setPending] = useState<ActionDef | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<Record<string, string>>({});
+  const fileRef = useRef<HTMLInputElement | null>(null);
 
   const tier = useMemo(() => {
     if (points >= 500) return { name: t("tier_aurora"), next: 1000 };
@@ -78,9 +90,35 @@ function Index() {
 
   const handleAction = (a: ActionDef) => {
     if (completed.has(a.id)) return;
+    setPhotoUrl(null);
+    setPending(a);
+  };
+
+  const closeDialog = () => {
+    if (photoUrl) URL.revokeObjectURL(photoUrl);
+    setPhotoUrl(null);
+    setPending(null);
+  };
+
+  const onPickFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (photoUrl) URL.revokeObjectURL(photoUrl);
+    setPhotoUrl(URL.createObjectURL(file));
+  };
+
+  const confirmAction = () => {
+    if (!pending) return;
+    const a = pending;
     setCompleted((s) => new Set(s).add(a.id));
     setPoints((p) => p + a.points);
-    toast.success(`+${a.points} ${t("points_label")} · ${t("toast_thanks")}`, { description: t(a.titleKey) });
+    if (photoUrl) setPhotos((m) => ({ ...m, [a.id]: photoUrl }));
+    toast.success(
+      `+${a.points} ${t("points_label")} · ${photoUrl ? t("upload_thanks_with_photo") : t("toast_thanks")}`,
+      { description: t(a.titleKey) },
+    );
+    setPending(null);
+    setPhotoUrl(null);
   };
 
   const handleRedeem = (r: RewardDef) => {
@@ -225,6 +263,13 @@ function Index() {
                 </div>
                 <h3 className="mt-4 font-semibold leading-snug">{t(a.titleKey)}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{t(a.detailKey)}</p>
+                {done && photos[a.id] ? (
+                  <img
+                    src={photos[a.id]}
+                    alt={t(a.titleKey)}
+                    className="mt-4 h-28 w-full rounded-lg object-cover"
+                  />
+                ) : null}
                 <Button
                   size="sm"
                   variant={done ? "secondary" : "default"}
@@ -293,6 +338,66 @@ function Index() {
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
         {t("footer")}
       </footer>
+
+      <Dialog open={!!pending} onOpenChange={(o) => { if (!o) closeDialog(); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("upload_title")}</DialogTitle>
+            <DialogDescription>
+              {pending ? t(pending.titleKey) : ""} · {t("upload_sub")}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-2">
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="hidden"
+              onChange={onPickFile}
+            />
+            {photoUrl ? (
+              <div className="relative overflow-hidden rounded-xl border border-border">
+                <img src={photoUrl} alt="preview" className="block max-h-72 w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => { URL.revokeObjectURL(photoUrl); setPhotoUrl(null); }}
+                  className="absolute right-2 top-2 rounded-full bg-background/80 p-1 text-foreground shadow-card-soft hover:bg-background"
+                  aria-label="Remove photo"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileRef.current?.click()}
+                className="flex h-40 w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-secondary/40 text-muted-foreground transition-smooth hover:border-primary/50 hover:text-foreground"
+              >
+                <Camera className="h-6 w-6" />
+                <span className="text-sm font-medium">{t("upload_pick")}</span>
+              </button>
+            )}
+            {photoUrl ? (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="mt-3"
+                onClick={() => fileRef.current?.click()}
+              >
+                {t("upload_change")}
+              </Button>
+            ) : null}
+          </div>
+          <DialogFooter className="mt-4 gap-2 sm:gap-2">
+            <Button variant="ghost" onClick={confirmAction}>{t("upload_skip")}</Button>
+            <Button onClick={confirmAction} className="shadow-glow">
+              {t("upload_confirm")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -58,6 +58,23 @@ const IS: Dict = {
   r_plant_t: "Íslenskur plöntugræðlingur",
   r_plant_p: "Grasagarðurinn",
   points_label: "stig",
+  // new social initiatives
+  a_neighbour_t: "Hjálpaðu nágranna",
+  a_neighbour_d: "Berðu poka, mokaðu snjó eða spjallaðu við einhvern einmana.",
+  a_soup_t: "Gefðu máltíð hjá Samhjálp",
+  a_soup_d: "Sjálfboðavinna í súpueldhúsinu í miðbænum.",
+  a_clothes_t: "Gefðu föt í Rauða krossinn",
+  a_clothes_d: "Komdu með heilan poka af notuðum fötum í gáminn.",
+  a_beach_t: "Strandhreinsun á Gróttu",
+  a_beach_d: "Mættu á næsta hreinsunardag við ströndina.",
+  // photo upload dialog
+  upload_title: "Sýndu okkur góðverkið",
+  upload_sub: "Bættu við mynd sem sönnun (valfrjálst). Aðeins geymd á þessu tæki.",
+  upload_pick: "Veldu mynd",
+  upload_change: "Breyta mynd",
+  upload_skip: "Sleppa",
+  upload_confirm: "Staðfesta og fá stig",
+  upload_thanks_with_photo: "Frábært! Mynd skráð.",
 };
 
 const EN: Dict = {
@@ -112,6 +129,21 @@ const EN: Dict = {
   r_plant_t: "Native plant seedling",
   r_plant_p: "Grasagarður",
   points_label: "points",
+  a_neighbour_t: "Help a neighbour",
+  a_neighbour_d: "Carry a bag, shovel snow, or chat with someone lonely.",
+  a_soup_t: "Serve a meal at Samhjálp",
+  a_soup_d: "Volunteer at the downtown soup kitchen.",
+  a_clothes_t: "Donate clothes to Red Cross",
+  a_clothes_d: "Drop a bag of used clothing at any container.",
+  a_beach_t: "Beach clean-up at Grótta",
+  a_beach_d: "Join the next shoreline clean-up day.",
+  upload_title: "Show us your good deed",
+  upload_sub: "Add a photo as proof (optional). Stored only on this device.",
+  upload_pick: "Choose photo",
+  upload_change: "Change photo",
+  upload_skip: "Skip",
+  upload_confirm: "Confirm and earn points",
+  upload_thanks_with_photo: "Awesome! Photo saved.",
 };
 
 const DICTS: Record<Lang, Dict> = { is: IS, en: EN };
