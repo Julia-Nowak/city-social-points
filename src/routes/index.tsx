@@ -16,14 +16,14 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Reykjavík Stig — Earn social points for a kinder city" },
+      { title: "Reykjavíkurstig — Vinnðu þér inn stig fyrir góðverk í borginni" },
       {
         name: "description",
         content:
-          "Reykjavík Stig rewards residents for civic actions like recycling, volunteering and using transit. Inspired by CopenPay.",
+          "Reykjavíkurstig verðlaunar borgarbúa fyrir endurvinnslu, sjálfboðastarf og að taka strætó. Innblásið af CopenPay.",
       },
-      { property: "og:title", content: "Reykjavík Stig" },
-      { property: "og:description", content: "Earn social points for a kinder Reykjavík." },
+      { property: "og:title", content: "Reykjavíkurstig" },
+      { property: "og:description", content: "Safnaðu stigum fyrir hlýrri og grænni Reykjavík." },
       { property: "og:image", content: heroImg },
     ],
   }),
@@ -46,19 +46,19 @@ type Reward = {
 };
 
 const ACTIONS: Action[] = [
-  { id: "recycle", title: "Recycle at a Sorpa station", detail: "Drop off plastics, paper or glass at any Sorpa.", points: 25, icon: Recycle },
-  { id: "bus", title: "Ride Strætó instead of driving", detail: "Tap into the city bus for your commute.", points: 15, icon: Bus },
-  { id: "bike", title: "Cycle 5 km in the city", detail: "Use Reykjavík bike paths for errands or commute.", points: 20, icon: Bike },
-  { id: "volunteer", title: "Volunteer 1 hour", detail: "Help at Rauði Krossinn or a neighbourhood centre.", points: 60, icon: HandHeart },
-  { id: "park", title: "Pick up litter in a park", detail: "Snap a before/after at Klambratún or Elliðaárdalur.", points: 30, icon: Trees },
-  { id: "library", title: "Borrow a book from Borgarbókasafn", detail: "Read instead of buy — share when done.", points: 10, icon: BookOpen },
+  { id: "recycle", title: "Endurvinna hjá Sorpu", detail: "Skilaðu plasti, pappír eða gleri á næstu Sorpu-stöð.", points: 25, icon: Recycle },
+  { id: "bus", title: "Taktu Strætó í stað bílsins", detail: "Pikkaðu þig inn í gulu vagnana á leið í vinnu eða skóla.", points: 15, icon: Bus },
+  { id: "bike", title: "Hjólaðu 5 km í borginni", detail: "Notaðu hjólastíga Reykjavíkur fyrir snúninga dagsins.", points: 20, icon: Bike },
+  { id: "volunteer", title: "Sjálfboðastarf í eina klst.", detail: "Hjálpaðu hjá Rauða krossinum eða í þínu hverfi.", points: 60, icon: HandHeart },
+  { id: "park", title: "Tíndu rusl í garðinum", detail: "Hreinsaðu Klambratún eða Elliðaárdal — fyrir og eftir mynd.", points: 30, icon: Trees },
+  { id: "library", title: "Fáðu bók að láni á Borgarbókasafninu", detail: "Lestu í staðinn fyrir að kaupa — deildu svo áfram.", points: 10, icon: BookOpen },
 ];
 
 const REWARDS: Reward[] = [
-  { id: "coffee", title: "Free filter coffee", partner: "Reykjavík Roasters", cost: 40, icon: Coffee },
-  { id: "pool", title: "Day pass to Sundhöllin", partner: "Reykjavík Pools", cost: 80, icon: Waves },
-  { id: "museum", title: "Entry to Listasafn Reykjavíkur", partner: "Reykjavík Art Museum", cost: 120, icon: Ticket },
-  { id: "plant", title: "Native plant seedling", partner: "Grasagarður", cost: 60, icon: Leaf },
+  { id: "coffee", title: "Frír uppáhellingur", partner: "Reykjavík Roasters", cost: 40, icon: Coffee },
+  { id: "pool", title: "Sundferð í Sundhöllina", partner: "Sundlaugar Reykjavíkur", cost: 80, icon: Waves },
+  { id: "museum", title: "Aðgangur að Listasafni Reykjavíkur", partner: "Listasafn Reykjavíkur", cost: 120, icon: Ticket },
+  { id: "plant", title: "Íslensk plöntugræðlingur", partner: "Grasagarðurinn", cost: 60, icon: Leaf },
 ];
 
 function Index() {
@@ -67,27 +67,27 @@ function Index() {
   const [redeemed, setRedeemed] = useState<Set<string>>(new Set());
 
   const tier = useMemo(() => {
-    if (points >= 500) return { name: "Aurora", next: 1000 };
-    if (points >= 200) return { name: "Glacier", next: 500 };
-    return { name: "Sprout", next: 200 };
+    if (points >= 500) return { name: "Norðurljós", next: 1000 };
+    if (points >= 200) return { name: "Jökull", next: 500 };
+    return { name: "Lúpína", next: 200 };
   }, [points]);
 
   const handleAction = (a: Action) => {
     if (completed.has(a.id)) return;
     setCompleted((s) => new Set(s).add(a.id));
     setPoints((p) => p + a.points);
-    toast.success(`+${a.points} stig`, { description: a.title });
+    toast.success(`+${a.points} stig · Takk fyrir!`, { description: a.title });
   };
 
   const handleRedeem = (r: Reward) => {
     if (redeemed.has(r.id)) return;
     if (points < r.cost) {
-      toast.error("Not enough stig yet", { description: `Need ${r.cost - points} more.` });
+      toast.error("Ekki nógu mörg stig ennþá", { description: `Vantar ${r.cost - points} til viðbótar.` });
       return;
     }
     setRedeemed((s) => new Set(s).add(r.id));
     setPoints((p) => p - r.cost);
-    toast.success("Reward unlocked", { description: `${r.title} — show this at ${r.partner}.` });
+    toast.success("Verðlaun opnuð · Gjörðu svo vel", { description: `${r.title} — sýndu þetta hjá ${r.partner}.` });
   };
 
   return (
@@ -101,7 +101,7 @@ function Index() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-aurora animate-aurora">
               <Sparkles className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="text-lg font-semibold tracking-tight">Reykjavík Stig</span>
+            <span className="text-lg font-semibold tracking-tight">Reykjavíkurstig</span>
           </div>
           <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm shadow-card-soft sm:flex">
             <Award className="h-4 w-4 text-primary" />
@@ -123,24 +123,24 @@ function Index() {
         <div className="absolute inset-0 bg-[var(--gradient-hero)]" />
         <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32 lg:py-40">
           <Badge className="mb-6 border-0 bg-white/15 text-white backdrop-blur">
-            Inspired by CopenPay · Pilot for Reykjavík
+            Velkomin · Tilraunaverkefni fyrir Reykjavíkurborg
           </Badge>
           <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-            Do good for the city.{" "}
+            Gerðu vel við borgina þína.{" "}
             <span className="text-gradient-aurora bg-gradient-aurora animate-aurora">
-              Earn social points.
+              Safnaðu stigum.
             </span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-white/80">
-            Recycle, ride the bus, volunteer or pick up litter — every small act becomes
-            <em> stig</em> you can spend at pools, cafés and museums across Reykjavík.
+            Endurvinndu, taktu strætó, hjálpaðu nágranna eða tíndu rusl — hvert lítið verk verður að
+            <em> stigum</em> sem þú getur eytt í sundlaugum, kaffihúsum og söfnum um alla Reykjavík.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button size="lg" className="shadow-glow" onClick={() => document.getElementById("actions")?.scrollIntoView({ behavior: "smooth" })}>
-              Start earning
+              Byrjaðu að safna
             </Button>
             <Button size="lg" variant="outline" className="border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white" onClick={() => document.getElementById("rewards")?.scrollIntoView({ behavior: "smooth" })}>
-              See rewards
+              Sjá verðlaun
             </Button>
           </div>
         </div>
@@ -152,16 +152,16 @@ function Index() {
           <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gradient-aurora opacity-30 blur-3xl animate-aurora" />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-wider text-muted-foreground">Your balance</p>
+              <p className="text-sm uppercase tracking-wider text-muted-foreground">Staðan þín</p>
               <div className="mt-2 flex items-baseline gap-2">
                 <span className="text-5xl font-semibold tracking-tight">{points}</span>
                 <span className="text-lg text-muted-foreground">stig</span>
               </div>
-              <Badge variant="secondary" className="mt-3">{tier.name} tier</Badge>
+              <Badge variant="secondary" className="mt-3">{tier.name}-stig</Badge>
             </div>
             <div className="w-full sm:max-w-xs">
               <div className="mb-2 flex justify-between text-xs text-muted-foreground">
-                <span>Progress to next tier</span>
+                <span>Næsta þrep</span>
                 <span>{points} / {tier.next}</span>
               </div>
               <Progress value={(points / tier.next) * 100} />
@@ -174,8 +174,8 @@ function Index() {
       <section id="actions" className="mx-auto max-w-6xl px-6 py-20">
         <div className="mb-10 flex items-end justify-between">
           <div>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Civic actions</h2>
-            <p className="mt-2 text-muted-foreground">Tap an action when you complete it. Honour system — for now.</p>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Góðverk dagsins</h2>
+            <p className="mt-2 text-muted-foreground">Smelltu á verk þegar þú klárar það. Heiðurskerfi — í bili.</p>
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -203,7 +203,7 @@ function Index() {
                   disabled={done}
                   onClick={() => handleAction(a)}
                 >
-                  {done ? "Logged today" : "I did this"}
+                  {done ? "Skráð í dag" : "Ég gerði þetta"}
                 </Button>
               </Card>
             );
@@ -216,12 +216,12 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Spend your stig</h2>
-              <p className="mt-2 text-muted-foreground">Local partners across Reykjavík redeem your civic points.</p>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Eyddu stigunum þínum</h2>
+              <p className="mt-2 text-muted-foreground">Samstarfsaðilar um alla Reykjavík taka við stigunum þínum.</p>
             </div>
             <Button asChild variant="outline">
               <Link to="/map">
-                <MapPin className="mr-1 h-4 w-4" /> Find on map
+                <MapPin className="mr-1 h-4 w-4" /> Sjá á korti
               </Link>
             </Button>
           </div>
@@ -252,7 +252,7 @@ function Index() {
                     onClick={() => handleRedeem(r)}
                     disabled={isRedeemed}
                   >
-                    {isRedeemed ? "Redeemed" : affordable ? "Redeem" : "Keep going"}
+                    {isRedeemed ? "Innleyst" : affordable ? "Leysa út" : "Áfram nú"}
                   </Button>
                 </Card>
               );
@@ -262,7 +262,7 @@ function Index() {
       </section>
 
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
-        A civic prototype for Reykjavíkurborg · Inspired by CopenPay
+        Borgaraleg frumgerð fyrir Reykjavíkurborg · Innblásið af CopenPay · Takk fyrir
       </footer>
     </div>
   );
