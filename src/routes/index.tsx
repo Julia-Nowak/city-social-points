@@ -10,7 +10,7 @@ import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin,
 } from "lucide-react";
-import heroImg from "@/assets/reykjavik-hero.jpg";
+import heroImg from "@/assets/reykjavik-hero.png";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -111,27 +111,30 @@ function Index() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <img
-          src={heroImg}
-          alt="Aurora over Reykjavík rooftops"
-          width={1536}
-          height={896}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-[var(--gradient-hero)]" />
-        <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32 lg:py-40">
-          <Badge className="mb-6 border-0 bg-white/15 text-white backdrop-blur">
+      {/* Hero — illustrated Reykjavík banner */}
+      <section className="relative">
+        <div className="mx-auto max-w-6xl px-6 pt-8">
+          <div className="overflow-hidden rounded-3xl border border-border shadow-card-soft">
+            <img
+              src={heroImg}
+              alt="Illustrated Reykjavík panorama with Hallgrímskirkja, an arctic fox and a puffin — Little good deeds"
+              width={2172}
+              height={724}
+              className="block h-auto w-full"
+            />
+          </div>
+        </div>
+        <div className="mx-auto max-w-6xl px-6 pt-10 pb-6">
+          <Badge variant="secondary" className="mb-4">
             Velkomin · Tilraunaverkefni fyrir Reykjavíkurborg
           </Badge>
-          <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
             Gerðu vel við borgina þína.{" "}
             <span className="text-gradient-aurora bg-gradient-aurora animate-aurora">
               Safnaðu stigum.
             </span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-white/80">
+          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
             Endurvinndu, taktu strætó, hjálpaðu nágranna eða tíndu rusl — hvert lítið verk verður að
             <em> stigum</em> sem þú getur eytt í sundlaugum, kaffihúsum og söfnum um alla Reykjavík.
           </p>
@@ -139,7 +142,7 @@ function Index() {
             <Button size="lg" className="shadow-glow" onClick={() => document.getElementById("actions")?.scrollIntoView({ behavior: "smooth" })}>
               Byrjaðu að safna
             </Button>
-            <Button size="lg" variant="outline" className="border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white" onClick={() => document.getElementById("rewards")?.scrollIntoView({ behavior: "smooth" })}>
+            <Button size="lg" variant="outline" onClick={() => document.getElementById("rewards")?.scrollIntoView({ behavior: "smooth" })}>
               Sjá verðlaun
             </Button>
           </div>
