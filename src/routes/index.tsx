@@ -13,7 +13,6 @@ import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
   Users, Utensils, Shirt, Waves as WavesIcon, Camera, X, ShieldCheck,
-  ExternalLink,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
 import { useLang } from "@/lib/i18n";
@@ -149,6 +148,11 @@ function Index() {
             <span className="text-lg font-semibold tracking-tight">{t("brand")}</span>
           </div>
           <div className="flex items-center gap-2">
+            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+              <Link to="/learn">
+                <BookOpen className="mr-1 h-4 w-4" /> {t("nav_learn")}
+              </Link>
+            </Button>
             <div className="flex items-center rounded-full border border-border bg-card p-0.5 text-xs shadow-card-soft" role="group" aria-label="Language">
               <Languages className="ml-2 mr-1 h-3.5 w-3.5 text-muted-foreground" />
               <button
