@@ -347,16 +347,27 @@ function Index() {
 
       {/* Resources / Learn more */}
       <section id="resources" className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <Card className="relative overflow-hidden border-border bg-card p-8 shadow-card-soft sm:p-10">
+        <div className="mx-auto grid max-w-6xl gap-4 px-6 py-16 md:grid-cols-2">
+          <Card className="relative overflow-hidden border-border bg-card p-8 shadow-card-soft">
             <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-aurora opacity-25 blur-3xl animate-aurora" />
-            <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-              <div className="max-w-xl">
-                <Badge variant="secondary" className="mb-3">{t("learn_badge")}</Badge>
-                <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t("learn_cta_title")}</h2>
-                <p className="mt-2 text-muted-foreground">{t("learn_cta_body")}</p>
-              </div>
-              <Button asChild size="lg" className="shadow-glow">
+            <div className="relative">
+              <Badge variant="secondary" className="mb-3">{t("impact_badge")}</Badge>
+              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t("impact_cta_title")}</h2>
+              <p className="mt-2 text-muted-foreground">{t("impact_cta_body")}</p>
+              <Button asChild size="lg" className="mt-5 shadow-glow">
+                <Link to="/impact">
+                  <BarChart3 className="mr-1 h-4 w-4" /> {t("impact_cta_btn")}
+                </Link>
+              </Button>
+            </div>
+          </Card>
+          <Card className="relative overflow-hidden border-border bg-card p-8 shadow-card-soft">
+            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-gradient-aurora opacity-25 blur-3xl animate-aurora" />
+            <div className="relative">
+              <Badge variant="secondary" className="mb-3">{t("learn_badge")}</Badge>
+              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t("learn_cta_title")}</h2>
+              <p className="mt-2 text-muted-foreground">{t("learn_cta_body")}</p>
+              <Button asChild size="lg" variant="outline" className="mt-5">
                 <Link to="/learn">
                   <BookOpen className="mr-1 h-4 w-4" /> {t("learn_cta_btn")}
                 </Link>
