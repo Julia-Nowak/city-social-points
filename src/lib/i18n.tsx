@@ -5,7 +5,8 @@ export type Lang = "is" | "en";
 type Dict = Record<string, string>;
 
 const IS: Dict = {
-  brand: "Reykjavíkurstig",
+  brand: "Reykjavík Stig",
+  brand_tag: "Little Good Deeds",
   nav_map: "Sjá á korti",
   hero_badge: "Velkomin · Tilraunaverkefni fyrir Reykjavíkurborg",
   hero_title_a: "Gerðu vel við borgina þína.",
@@ -135,6 +136,7 @@ const IS: Dict = {
 
 const EN: Dict = {
   brand: "Reykjavík Stig",
+  brand_tag: "Little Good Deeds",
   nav_map: "Find on map",
   hero_badge: "Welcome · A pilot for the City of Reykjavík",
   hero_title_a: "Do good for the city.",
