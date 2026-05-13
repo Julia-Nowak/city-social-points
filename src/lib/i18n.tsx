@@ -124,6 +124,13 @@ const IS: Dict = {
   stat_volunteers_v: "~3.000",
   stat_volunteers_l: "sjálfboðaliðar Rauða krossins",
   stats_note: "Heimildir: Hagstofa Íslands, Ferðamálastofa, Embætti landlæknis og Rauði krossinn. Tölur námundaðar.",
+  nav_impact: "Áhrif",
+  impact_badge: "Tölur og umfang",
+  impact_cta_title: "Sjá hverjir gætu notið góðs af",
+  impact_cta_body: "Lykiltölur um íbúa Reykjavíkur, ferðamenn og viðkvæma hópa.",
+  impact_cta_btn: "Skoða tölurnar",
+  impact_to_sources: "Sjá heimildir",
+  learn_to_impact: "Sjá tölurnar",
 };
 
 const EN: Dict = {
@@ -240,6 +247,13 @@ const EN: Dict = {
   stat_volunteers_v: "~3,000",
   stat_volunteers_l: "Icelandic Red Cross volunteers",
   stats_note: "Sources: Statistics Iceland, Icelandic Tourist Board, Directorate of Health and Icelandic Red Cross. Figures rounded.",
+  nav_impact: "Impact",
+  impact_badge: "Numbers & scale",
+  impact_cta_title: "See who could benefit",
+  impact_cta_body: "Key numbers on Reykjavík residents, visiting tourists and people in need.",
+  impact_cta_btn: "View the numbers",
+  impact_to_sources: "View sources",
+  learn_to_impact: "View the numbers",
 };
 
 const DICTS: Record<Lang, Dict> = { is: IS, en: EN };
