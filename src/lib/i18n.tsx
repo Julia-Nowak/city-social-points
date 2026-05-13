@@ -102,6 +102,12 @@ const IS: Dict = {
   res_ust_d: "Gögn um úrgang, endurvinnslu og loftslagsmál á Íslandi.",
   res_velferdarvaktin_t: "Velferðarvaktin",
   res_velferdarvaktin_d: "Vöktun stjórnvalda á félagslegum og fjárhagslegum afleiðingum fyrir viðkvæma hópa.",
+  nav_learn: "Lærðu meira",
+  learn_badge: "Heimildir og rannsóknir",
+  learn_back: "Til baka",
+  learn_cta_title: "Viltu vita meira um málefnin?",
+  learn_cta_body: "Skoðaðu áreiðanlegar heimildir um þá sem njóta góðs af, umfang vandans og rætur hans.",
+  learn_cta_btn: "Opna heimildir",
 };
 
 const EN: Dict = {
@@ -197,6 +203,12 @@ const EN: Dict = {
   res_ust_d: "Data on waste, recycling and climate in Iceland.",
   res_velferdarvaktin_t: "Welfare Watch",
   res_velferdarvaktin_d: "Government monitoring of social and financial impacts on vulnerable groups.",
+  nav_learn: "Learn more",
+  learn_badge: "Sources & research",
+  learn_back: "Back",
+  learn_cta_title: "Want to understand the cause?",
+  learn_cta_body: "Explore trusted sources about the people we serve, the scale of the problem and its root causes.",
+  learn_cta_btn: "Open sources",
 };
 
 const DICTS: Record<Lang, Dict> = { is: IS, en: EN };
