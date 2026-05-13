@@ -205,7 +205,7 @@ function Index() {
           </Badge>
           <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
             {t("hero_title_a")}{" "}
-            <span className="bg-gradient-aurora bg-clip-text text-transparent">
+            <span className="text-gradient-aurora">
               {t("hero_title_b")}
             </span>
           </h1>
