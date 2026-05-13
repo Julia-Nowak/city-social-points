@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ExternalLink, Sparkles, Heart, BarChart3, BookOpen } from "lucide-react";
+import { ArrowLeft, ExternalLink, Sparkles, Heart, BarChart3, BookOpen, Users, Building2, Plane, HandCoins, UserMinus, HandHeart } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/learn")({
@@ -50,6 +51,15 @@ const GROUPS = [
   },
 ] as const;
 
+const STATS = [
+  { icon: Users, vKey: "stat_residents_v", lKey: "stat_residents_l" },
+  { icon: Building2, vKey: "stat_capital_v", lKey: "stat_capital_l" },
+  { icon: Plane, vKey: "stat_tourists_v", lKey: "stat_tourists_l" },
+  { icon: HandCoins, vKey: "stat_poverty_v", lKey: "stat_poverty_l" },
+  { icon: UserMinus, vKey: "stat_lonely_v", lKey: "stat_lonely_l" },
+  { icon: HandHeart, vKey: "stat_volunteers_v", lKey: "stat_volunteers_l" },
+] as const;
+
 function LearnPage() {
   const { t } = useLang();
   return (
@@ -76,6 +86,31 @@ function LearnPage() {
           {t("res_h")}
         </h1>
         <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("res_sub")}</p>
+      </section>
+
+      {/* Key numbers */}
+      <section className="mx-auto max-w-6xl px-6 pt-4 pb-8">
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{t("stats_h")}</h2>
+          <p className="mt-2 text-muted-foreground">{t("stats_sub")}</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {STATS.map((s) => {
+            const Icon = s.icon;
+            return (
+              <Card key={s.vKey} className="flex items-start gap-4 border-border bg-card p-5 shadow-card-soft">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-aurora text-primary-foreground animate-aurora">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-3xl font-semibold tracking-tight">{t(s.vKey)}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{t(s.lKey)}</div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+        <p className="mt-4 text-xs text-muted-foreground">{t("stats_note")}</p>
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-12">
