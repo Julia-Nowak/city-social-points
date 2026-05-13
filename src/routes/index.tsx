@@ -336,6 +336,66 @@ function Index() {
         </div>
       </section>
 
+      {/* Resources / Learn more */}
+      <section id="resources" className="border-t border-border">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="mb-10 max-w-2xl">
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t("res_h")}</h2>
+            <p className="mt-2 text-muted-foreground">{t("res_sub")}</p>
+          </div>
+          {([
+            {
+              group: "res_group_people",
+              items: [
+                { t: "res_redcross_t", d: "res_redcross_d", url: "https://www.raudikrossinn.is" },
+                { t: "res_samhjalp_t", d: "res_samhjalp_d", url: "https://samhjalp.is" },
+                { t: "res_fjolskylduhjalp_t", d: "res_fjolskylduhjalp_d", url: "https://fjolskylduhjalp.is" },
+              ],
+            },
+            {
+              group: "res_group_problem",
+              items: [
+                { t: "res_hagstofa_t", d: "res_hagstofa_d", url: "https://www.hagstofa.is" },
+                { t: "res_borgin_t", d: "res_borgin_d", url: "https://reykjavik.is/velferd" },
+                { t: "res_landlaeknir_t", d: "res_landlaeknir_d", url: "https://www.landlaeknir.is" },
+              ],
+            },
+            {
+              group: "res_group_roots",
+              items: [
+                { t: "res_varda_t", d: "res_varda_d", url: "https://www.varda.is" },
+                { t: "res_ust_t", d: "res_ust_d", url: "https://www.ust.is" },
+                { t: "res_velferdarvaktin_t", d: "res_velferdarvaktin_d", url: "https://www.stjornarradid.is/verkefni/felags-og-vinnumarkadsmal/velferdarvaktin/" },
+              ],
+            },
+          ] as const).map((section) => (
+            <div key={section.group} className="mb-10 last:mb-0">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                {t(section.group)}
+              </h3>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {section.items.map((it) => (
+                  <a
+                    key={it.url}
+                    href={it.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-card-soft transition-smooth hover:-translate-y-0.5 hover:border-primary/50"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <h4 className="font-semibold leading-snug">{t(it.t)}</h4>
+                      <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-smooth group-hover:text-primary" />
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">{t(it.d)}</p>
+                    <span className="mt-3 text-xs font-medium text-primary">{t("res_visit")}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
         {t("footer")}
       </footer>
