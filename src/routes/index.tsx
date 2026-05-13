@@ -12,7 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
-  Users, Utensils, Shirt, Waves as WavesIcon, Camera, X, ShieldCheck,
+  Users, Utensils, Shirt, Waves as WavesIcon, Camera, X, ShieldCheck, BarChart3,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
 import { useLang } from "@/lib/i18n";
@@ -151,6 +151,11 @@ function Index() {
             <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
               <Link to="/learn">
                 <BookOpen className="mr-1 h-4 w-4" /> {t("nav_learn")}
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+              <Link to="/impact">
+                <BarChart3 className="mr-1 h-4 w-4" /> {t("nav_impact")}
               </Link>
             </Button>
             <div className="flex items-center rounded-full border border-border bg-card p-0.5 text-xs shadow-card-soft" role="group" aria-label="Language">
