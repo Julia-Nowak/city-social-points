@@ -108,6 +108,22 @@ const IS: Dict = {
   learn_cta_title: "Viltu vita meira um málefnin?",
   learn_cta_body: "Skoðaðu áreiðanlegar heimildir um þá sem njóta góðs af, umfang vandans og rætur hans.",
   learn_cta_btn: "Opna heimildir",
+  // stats on learn page
+  stats_h: "Hverjir njóta góðs af?",
+  stats_sub: "Áætlaðar tölur fyrir Reykjavík og Ísland — byggt á opinberum heimildum.",
+  stat_residents_v: "~140.000",
+  stat_residents_l: "íbúar í Reykjavík",
+  stat_capital_v: "~240.000",
+  stat_capital_l: "á höfuðborgarsvæðinu",
+  stat_tourists_v: "~2,2 millj.",
+  stat_tourists_l: "ferðamenn á Íslandi á ári",
+  stat_poverty_v: "~35.000",
+  stat_poverty_l: "í hættu á fátækt á Íslandi",
+  stat_lonely_v: "1 af 4",
+  stat_lonely_l: "ungmenni finna oft fyrir einmanaleika",
+  stat_volunteers_v: "~3.000",
+  stat_volunteers_l: "sjálfboðaliðar Rauða krossins",
+  stats_note: "Heimildir: Hagstofa Íslands, Ferðamálastofa, Embætti landlæknis og Rauði krossinn. Tölur námundaðar.",
 };
 
 const EN: Dict = {
@@ -209,6 +225,21 @@ const EN: Dict = {
   learn_cta_title: "Want to understand the cause?",
   learn_cta_body: "Explore trusted sources about the people we serve, the scale of the problem and its root causes.",
   learn_cta_btn: "Open sources",
+  stats_h: "Who could benefit?",
+  stats_sub: "Estimated figures for Reykjavík and Iceland — based on public sources.",
+  stat_residents_v: "~140,000",
+  stat_residents_l: "residents of Reykjavík",
+  stat_capital_v: "~240,000",
+  stat_capital_l: "in the capital area",
+  stat_tourists_v: "~2.2M",
+  stat_tourists_l: "tourists visit Iceland yearly",
+  stat_poverty_v: "~35,000",
+  stat_poverty_l: "at risk of poverty in Iceland",
+  stat_lonely_v: "1 in 4",
+  stat_lonely_l: "young adults often feel lonely",
+  stat_volunteers_v: "~3,000",
+  stat_volunteers_l: "Icelandic Red Cross volunteers",
+  stats_note: "Sources: Statistics Iceland, Icelandic Tourist Board, Directorate of Health and Icelandic Red Cross. Figures rounded.",
 };
 
 const DICTS: Record<Lang, Dict> = { is: IS, en: EN };
