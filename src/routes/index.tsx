@@ -13,6 +13,7 @@ import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
   Users, Utensils, Shirt, Waves as WavesIcon, Camera, X, ShieldCheck,
+  ExternalLink,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
 import { useLang } from "@/lib/i18n";
