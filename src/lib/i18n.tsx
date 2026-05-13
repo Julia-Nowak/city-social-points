@@ -9,8 +9,8 @@ const IS: Dict = {
   brand_tag: "Little Good Deeds",
   nav_map: "Sjá á korti",
   hero_badge: "Velkomin · Tilraunaverkefni fyrir Reykjavíkurborg",
-  hero_title_a: "Gerðu vel við borgina þína.",
-  hero_title_b: "Safnaðu stigum.",
+  hero_title_a: "Lítil verk.",
+  hero_title_b: "Stór áhrif á borgina.",
   hero_lede:
     "Endurvinndu, taktu strætó, hjálpaðu nágranna eða tíndu rusl — hvert lítið verk verður að stigum sem þú getur eytt í sundlaugum, kaffihúsum og söfnum um alla Reykjavík.",
   cta_start: "Byrjaðu að safna",
@@ -139,8 +139,8 @@ const EN: Dict = {
   brand_tag: "Little Good Deeds",
   nav_map: "Find on map",
   hero_badge: "Welcome · A pilot for the City of Reykjavík",
-  hero_title_a: "Do good for the city.",
-  hero_title_b: "Earn social points.",
+  hero_title_a: "Little deeds.",
+  hero_title_b: "Big impact on the city.",
   hero_lede:
     "Recycle, ride the bus, help a neighbour or pick up litter — every small act becomes points you can spend at pools, cafés and museums across Reykjavík.",
   cta_start: "Start earning",
