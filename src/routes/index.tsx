@@ -384,6 +384,13 @@ function Index() {
       </section>
 
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
+        <nav className="mb-4 flex flex-wrap justify-center gap-x-5 gap-y-2">
+          <Link to="/how-it-works" className="hover:text-foreground"><Compass className="mr-1 inline h-3.5 w-3.5" />{t("nav_how")}</Link>
+          <Link to="/faq" className="hover:text-foreground"><HelpCircle className="mr-1 inline h-3.5 w-3.5" />{t("nav_faq")}</Link>
+          <Link to="/for-businesses" className="hover:text-foreground"><Building2 className="mr-1 inline h-3.5 w-3.5" />{t("nav_partners")}</Link>
+          <Link to="/learn" className="hover:text-foreground"><BookOpen className="mr-1 inline h-3.5 w-3.5" />{t("nav_learn")}</Link>
+          <Link to="/impact" className="hover:text-foreground"><BarChart3 className="mr-1 inline h-3.5 w-3.5" />{t("nav_impact")}</Link>
+        </nav>
         {t("footer")}
       </footer>
 
