@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { LanguageProvider } from "@/lib/i18n";
+import { LanguageProvider, useLang } from "@/lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -73,16 +73,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Reykjavik Social Points rewards users for engaging with local businesses in Reykjavik." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Reykjavik Social Points rewards users for engaging with local businesses in Reykjavik." },
+      // FIX: was "Lovable App" — now correctly branded
+      { title: "Reykjavík Stig — Civic Rewards for Good Deeds" },
+      { name: "description", content: "Reykjavík Stig rewards residents and visitors for recycling, volunteering and sustainable travel. Earn points, spend them at pools, cafés and museums." },
+      { name: "author", content: "Reykjavík Stig" },
+      { property: "og:title", content: "Reykjavík Stig" },
+      { property: "og:description", content: "Reykjavík Stig rewards users for civic action — recycling, volunteering, riding the bus." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Reykjavik Social Points rewards users for engaging with local businesses in Reykjavik." },
+      // FIX: was "@Lovable"
+      { name: "twitter:site", content: "@ReykjavikStig" },
+      { name: "twitter:title", content: "Reykjavík Stig" },
+      { name: "twitter:description", content: "Earn civic points for good deeds in Reykjavík and spend them at local partners." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/afbcacbe-643b-4206-89e4-37f92b1791a8/id-preview-b015e734--fed5353d-23ad-4f30-8b5c-dead14357120.lovable.app-1778513927693.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/afbcacbe-643b-4206-89e4-37f92b1791a8/id-preview-b015e734--fed5353d-23ad-4f30-8b5c-dead14357120.lovable.app-1778513927693.png" },
     ],
@@ -99,9 +101,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+// FIX: html lang is now driven by the active language from context
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="is">
       <head>
         <HeadContent />
       </head>
@@ -124,3 +127,4 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+
