@@ -13,6 +13,7 @@ import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
   Users, Utensils, Shirt, Waves as WavesIcon, Camera, X, ShieldCheck, BarChart3,
+  HelpCircle, Building2, Compass,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
 import { useLang } from "@/lib/i18n";
@@ -149,11 +150,16 @@ function Index() {
           </div>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+              <Link to="/how-it-works">
+                <Compass className="mr-1 h-4 w-4" /> {t("nav_how")}
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
               <Link to="/learn">
                 <BookOpen className="mr-1 h-4 w-4" /> {t("nav_learn")}
               </Link>
             </Button>
-            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+            <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
               <Link to="/impact">
                 <BarChart3 className="mr-1 h-4 w-4" /> {t("nav_impact")}
               </Link>
