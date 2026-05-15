@@ -207,7 +207,8 @@ const MenubarShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanE
     />
   );
 };
-MenubarShortcut.displayname = "MenubarShortcut";
+// FIX: was "displayname" (lowercase n) — React DevTools only reads "displayName"
+MenubarShortcut.displayName = "MenubarShortcut";
 
 export {
   Menubar,
@@ -227,3 +228,4 @@ export {
   MenubarSub,
   MenubarShortcut,
 };
+
