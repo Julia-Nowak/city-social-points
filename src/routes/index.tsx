@@ -13,6 +13,7 @@ import {
   Recycle, Bus, Trees, HandHeart, Bike, Sparkles,
   Coffee, Ticket, Waves, BookOpen, Award, Leaf, MapPin, Languages,
   Users, Utensils, Shirt, Waves as WavesIcon, Camera, X, ShieldCheck, BarChart3,
+  HelpCircle, Building2, Compass,
 } from "lucide-react";
 import heroImg from "@/assets/reykjavik-hero.png";
 import { useLang } from "@/lib/i18n";
@@ -149,11 +150,16 @@ function Index() {
           </div>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+              <Link to="/how-it-works">
+                <Compass className="mr-1 h-4 w-4" /> {t("nav_how")}
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
               <Link to="/learn">
                 <BookOpen className="mr-1 h-4 w-4" /> {t("nav_learn")}
               </Link>
             </Button>
-            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+            <Button asChild variant="ghost" size="sm" className="hidden md:inline-flex">
               <Link to="/impact">
                 <BarChart3 className="mr-1 h-4 w-4" /> {t("nav_impact")}
               </Link>
@@ -378,6 +384,13 @@ function Index() {
       </section>
 
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
+        <nav className="mb-4 flex flex-wrap justify-center gap-x-5 gap-y-2">
+          <Link to="/how-it-works" className="hover:text-foreground"><Compass className="mr-1 inline h-3.5 w-3.5" />{t("nav_how")}</Link>
+          <Link to="/faq" className="hover:text-foreground"><HelpCircle className="mr-1 inline h-3.5 w-3.5" />{t("nav_faq")}</Link>
+          <Link to="/for-businesses" className="hover:text-foreground"><Building2 className="mr-1 inline h-3.5 w-3.5" />{t("nav_partners")}</Link>
+          <Link to="/learn" className="hover:text-foreground"><BookOpen className="mr-1 inline h-3.5 w-3.5" />{t("nav_learn")}</Link>
+          <Link to="/impact" className="hover:text-foreground"><BarChart3 className="mr-1 inline h-3.5 w-3.5" />{t("nav_impact")}</Link>
+        </nav>
         {t("footer")}
       </footer>
 

@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ImpactRouteImport } from './routes/impact'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as ForBusinessesRouteImport } from './routes/for-businesses'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as IndexRouteImport } from './routes/index'
 
 const MapRoute = MapRouteImport.update({
@@ -29,6 +32,21 @@ const ImpactRoute = ImpactRouteImport.update({
   path: '/impact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForBusinessesRoute = ForBusinessesRouteImport.update({
+  id: '/for-businesses',
+  path: '/for-businesses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +55,18 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/for-businesses': typeof ForBusinessesRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/impact': typeof ImpactRoute
   '/learn': typeof LearnRoute
   '/map': typeof MapRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/for-businesses': typeof ForBusinessesRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/impact': typeof ImpactRoute
   '/learn': typeof LearnRoute
   '/map': typeof MapRoute
@@ -50,20 +74,48 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/for-businesses': typeof ForBusinessesRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/impact': typeof ImpactRoute
   '/learn': typeof LearnRoute
   '/map': typeof MapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/impact' | '/learn' | '/map'
+  fullPaths:
+    | '/'
+    | '/faq'
+    | '/for-businesses'
+    | '/how-it-works'
+    | '/impact'
+    | '/learn'
+    | '/map'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/impact' | '/learn' | '/map'
-  id: '__root__' | '/' | '/impact' | '/learn' | '/map'
+  to:
+    | '/'
+    | '/faq'
+    | '/for-businesses'
+    | '/how-it-works'
+    | '/impact'
+    | '/learn'
+    | '/map'
+  id:
+    | '__root__'
+    | '/'
+    | '/faq'
+    | '/for-businesses'
+    | '/how-it-works'
+    | '/impact'
+    | '/learn'
+    | '/map'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FaqRoute: typeof FaqRoute
+  ForBusinessesRoute: typeof ForBusinessesRoute
+  HowItWorksRoute: typeof HowItWorksRoute
   ImpactRoute: typeof ImpactRoute
   LearnRoute: typeof LearnRoute
   MapRoute: typeof MapRoute
@@ -92,6 +144,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImpactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-businesses': {
+      id: '/for-businesses'
+      path: '/for-businesses'
+      fullPath: '/for-businesses'
+      preLoaderRoute: typeof ForBusinessesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +177,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FaqRoute: FaqRoute,
+  ForBusinessesRoute: ForBusinessesRoute,
+  HowItWorksRoute: HowItWorksRoute,
   ImpactRoute: ImpactRoute,
   LearnRoute: LearnRoute,
   MapRoute: MapRoute,
@@ -111,13 +187,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
