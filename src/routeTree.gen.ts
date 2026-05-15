@@ -13,6 +13,7 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ImpactRouteImport } from './routes/impact'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as ForBusinessesRouteImport } from './routes/for-businesses'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -36,6 +37,11 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
   path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForBusinessesRoute = ForBusinessesRouteImport.update({
+  id: '/for-businesses',
+  path: '/for-businesses',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -50,6 +56,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/faq': typeof FaqRoute
+  '/for-businesses': typeof ForBusinessesRoute
   '/how-it-works': typeof HowItWorksRoute
   '/impact': typeof ImpactRoute
   '/learn': typeof LearnRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/faq': typeof FaqRoute
+  '/for-businesses': typeof ForBusinessesRoute
   '/how-it-works': typeof HowItWorksRoute
   '/impact': typeof ImpactRoute
   '/learn': typeof LearnRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/faq': typeof FaqRoute
+  '/for-businesses': typeof ForBusinessesRoute
   '/how-it-works': typeof HowItWorksRoute
   '/impact': typeof ImpactRoute
   '/learn': typeof LearnRoute
@@ -74,13 +83,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/faq' | '/how-it-works' | '/impact' | '/learn' | '/map'
+  fullPaths:
+    | '/'
+    | '/faq'
+    | '/for-businesses'
+    | '/how-it-works'
+    | '/impact'
+    | '/learn'
+    | '/map'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/faq' | '/how-it-works' | '/impact' | '/learn' | '/map'
+  to:
+    | '/'
+    | '/faq'
+    | '/for-businesses'
+    | '/how-it-works'
+    | '/impact'
+    | '/learn'
+    | '/map'
   id:
     | '__root__'
     | '/'
     | '/faq'
+    | '/for-businesses'
     | '/how-it-works'
     | '/impact'
     | '/learn'
@@ -90,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FaqRoute: typeof FaqRoute
+  ForBusinessesRoute: typeof ForBusinessesRoute
   HowItWorksRoute: typeof HowItWorksRoute
   ImpactRoute: typeof ImpactRoute
   LearnRoute: typeof LearnRoute
@@ -126,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/for-businesses': {
+      id: '/for-businesses'
+      path: '/for-businesses'
+      fullPath: '/for-businesses'
+      preLoaderRoute: typeof ForBusinessesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -146,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FaqRoute: FaqRoute,
+  ForBusinessesRoute: ForBusinessesRoute,
   HowItWorksRoute: HowItWorksRoute,
   ImpactRoute: ImpactRoute,
   LearnRoute: LearnRoute,
