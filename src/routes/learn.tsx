@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ExternalLink, Sparkles, Heart, BarChart3, BookOpen, BarChart3 as BarChart3Icon } from "lucide-react";
+// FIX: removed duplicate import — "BarChart3 as BarChart3Icon" was identical to BarChart3
+import { ArrowLeft, ExternalLink, Sparkles, Heart, BarChart3, BookOpen } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/learn")({
@@ -79,7 +80,8 @@ function LearnPage() {
         <div className="mt-6">
           <Button asChild variant="outline" size="sm">
             <Link to="/impact">
-              <BarChart3Icon className="mr-1 h-4 w-4" /> {t("learn_to_impact")}
+              {/* FIX: was using BarChart3Icon alias which no longer exists */}
+              <BarChart3 className="mr-1 h-4 w-4" /> {t("learn_to_impact")}
             </Link>
           </Button>
         </div>
