@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Reykjavíkurstig — Vinnðu þér inn stig fyrir góðverk í borginni" },
+      { title: "Reykjavík Stig — Vinnðu þér inn stig fyrir góðverk í borginni" },
       {
         name: "description",
         content:
@@ -75,19 +75,50 @@ const REWARDS: RewardDef[] = [
 
 function Index() {
   const { lang, setLang, t } = useLang();
-  const [points, setPoints] = useState(85);
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
-  const [redeemed, setRedeemed] = useState<Set<string>>(new Set());
+
+  // FIX: persist points, completed and redeemed in localStorage so they survive page reloads
+  const [points, setPoints] = useState(() => {
+    if (typeof window === "undefined") return 85;
+    return parseInt(localStorage.getItem("rs_points") ?? "85", 10);
+  });
+  const [completed, setCompleted] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const stored = localStorage.getItem("rs_completed");
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch { return new Set(); }
+  });
+  const [redeemed, setRedeemed] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const stored = localStorage.getItem("rs_redeemed");
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  useEffect(() => { localStorage.setItem("rs_points", String(points)); }, [points]);
+  useEffect(() => { localStorage.setItem("rs_completed", JSON.stringify([...completed])); }, [completed]);
+  useEffect(() => { localStorage.setItem("rs_redeemed", JSON.stringify([...redeemed])); }, [redeemed]);
+
   const [pending, setPending] = useState<ActionDef | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [photos, setPhotos] = useState<Record<string, string>>({});
   const fileRef = useRef<HTMLInputElement | null>(null);
 
+  // FIX: tier badge no longer appends suffix from translation key that already contains it.
+  // The Icelandic "tier_suffix" is "-stig" which was being appended to tier names that
+  // don't need it. We only use tier_suffix in EN where it says " tier".
   const tier = useMemo(() => {
-    if (points >= 500) return { name: t("tier_aurora"), next: 1000 };
-    if (points >= 200) return { name: t("tier_glacier"), next: 500 };
-    return { name: t("tier_sprout"), next: 200 };
-  }, [points, lang]);
+    if (points >= 500) return { nameKey: "tier_aurora", next: 1000 };
+    if (points >= 200) return { nameKey: "tier_glacier", next: 500 };
+    return { nameKey: "tier_sprout", next: 200 };
+  }, [points]);
+
+  // Build tier label: in IS the tier names are standalone words; tier_suffix adds nothing meaningful.
+  // In EN it adds " tier" (e.g. "Sprout tier"). Keep the suffix only for EN.
+  const tierLabel = lang === "en"
+    ? `${t(tier.nameKey)}${t("tier_suffix")}`
+    : t(tier.nameKey);
 
   const handleAction = (a: ActionDef) => {
     if (completed.has(a.id)) return;
@@ -106,6 +137,20 @@ function Index() {
     if (!file) return;
     if (photoUrl) URL.revokeObjectURL(photoUrl);
     setPhotoUrl(URL.createObjectURL(file));
+  };
+
+  // FIX: split into two handlers so "Skip" discards the photo while "Confirm" saves it
+  const skipAction = () => {
+    if (!pending) return;
+    const a = pending;
+    setCompleted((s) => new Set(s).add(a.id));
+    setPoints((p) => p + a.points);
+    if (photoUrl) URL.revokeObjectURL(photoUrl);
+    toast.success(`+${a.points} ${t("points_label")} · ${t("toast_thanks")}`, {
+      description: t(a.titleKey),
+    });
+    setPending(null);
+    setPhotoUrl(null);
   };
 
   const confirmAction = () => {
@@ -146,7 +191,10 @@ function Index() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-aurora animate-aurora">
               <Sparkles className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="flex items-baseline gap-2"><span className="text-lg font-semibold tracking-tight">{t("brand")}</span><span className="hidden text-xs font-medium uppercase tracking-wider text-muted-foreground sm:inline">{t("brand_tag")}</span></span>
+            <span className="flex items-baseline gap-2">
+              <span className="text-lg font-semibold tracking-tight">{t("brand")}</span>
+              <span className="hidden text-xs font-medium uppercase tracking-wider text-muted-foreground sm:inline">{t("brand_tag")}</span>
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
@@ -192,7 +240,7 @@ function Index() {
         </div>
       </header>
 
-      {/* Hero — illustrated Reykjavík banner */}
+      {/* Hero */}
       <section className="relative">
         <div className="mx-auto max-w-6xl px-6 pt-8">
           <div className="overflow-hidden rounded-3xl border border-border shadow-card-soft">
@@ -229,8 +277,10 @@ function Index() {
         </div>
       </section>
 
-      {/* Balance card */}
-      <section className="mx-auto -mt-12 max-w-6xl px-6">
+      {/* Balance card
+          FIX: removed -mt-12 negative margin that caused overlap on mobile;
+          replaced with a regular top margin for consistent spacing */}
+      <section className="mx-auto mt-4 max-w-6xl px-6 sm:mt-0 sm:-mt-8">
         <Card className="relative overflow-hidden border-0 bg-card p-6 shadow-card-soft sm:p-8">
           <div className="absolute -right-20 -top-20 h-60 w-60 rounded-full bg-gradient-aurora opacity-30 blur-3xl animate-aurora" />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -240,7 +290,8 @@ function Index() {
                 <span className="text-5xl font-semibold tracking-tight">{points}</span>
                 <span className="text-lg text-muted-foreground">{t("points_label")}</span>
               </div>
-              <Badge variant="secondary" className="mt-3">{tier.name}{t("tier_suffix")}</Badge>
+              {/* FIX: use tierLabel which conditionally appends " tier" only in English */}
+              <Badge variant="secondary" className="mt-3">{tierLabel}</Badge>
             </div>
             <div className="w-full sm:max-w-xs">
               <div className="mb-2 flex justify-between text-xs text-muted-foreground">
@@ -394,6 +445,7 @@ function Index() {
         {t("footer")}
       </footer>
 
+      {/* Photo upload dialog */}
       <Dialog open={!!pending} onOpenChange={(o) => { if (!o) closeDialog(); }}>
         <DialogContent>
           <DialogHeader>
@@ -452,8 +504,9 @@ function Index() {
               <p className="mt-1 leading-relaxed">{t("privacy_body")}</p>
             </div>
           </div>
+          {/* FIX: Skip now calls skipAction (no photo saved); Confirm calls confirmAction (saves photo if present) */}
           <DialogFooter className="mt-4 gap-2 sm:gap-2">
-            <Button variant="ghost" onClick={confirmAction}>{t("upload_skip")}</Button>
+            <Button variant="ghost" onClick={skipAction}>{t("upload_skip")}</Button>
             <Button onClick={confirmAction} className="shadow-glow">
               {t("upload_confirm")}
             </Button>
